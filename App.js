@@ -2,11 +2,14 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Card from './app/features/card/Card';
 
+
+
 export default function App() {
+  console.log("app Start");
   return (
     <View style={styles.container}>
       <Text>TheSmorgasBord</Text>
-      <Card />
+      <Card/>
       <StatusBar style="auto" />
     </View>
   );
