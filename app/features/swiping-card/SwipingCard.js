@@ -5,22 +5,22 @@ import { Dimensions } from 'react-native';
 const screenWidth = Dimensions.get('screen').width;
 const screenHeight = Dimensions.get('screen').height;
 
-const Card = () => {
+const SwipingCard = ({card, responseCallback}) => {
   return (
     <View style={styles.container}>
-      <Image source={require('./cards/card1.jpg')} style={styles.image} 
+      <Image source={card} style={styles.image} 
       onError={(error) => console.log(error)}/>
       <View style={styles.buttonContainer}>
         <Button
-          title="Yes"
+          title="No"
           onPress={() => {
-            console.log('Button Yes clicked!');
+            responseCallback(false);
           }}
         />
         <Button
-          title="No"
+          title="Yes"
           onPress={() => {
-            console.log('Button No clicked!');
+            responseCallback(true);
           }}
         />
       </View>
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Card;
+export default SwipingCard;
