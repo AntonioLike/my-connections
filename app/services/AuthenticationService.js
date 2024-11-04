@@ -4,13 +4,13 @@ import axios from 'axios';
 const API_URL = 'http://localhost:3000/user'; // Adjust according to your backend URL
 
 // Register a new user
-export const register = async (email, password, confirmPassword) => {
+export const register = async (name, email, password, confirmPassword) => {
     try {
         if (password !== confirmPassword) {
             throw new Error('Passwords do not match');
         }
 
-        const response = await axios.post(`${API_URL}/`, { email, password });
+        const response = await axios.post(`${API_URL}/`, { name, email, password });
         return response.data; // Response contains the newly created user
     } catch (error) {
         console.error('Registration error:', error.response ? error.response.data : error.message);
