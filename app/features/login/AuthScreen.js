@@ -5,6 +5,7 @@ import { login, register, resetPassword } from '../../services/AuthenticationSer
 const AuthScreen = () => {
   const [mode, setMode] = useState('login'); // 'login', 'register', 'reset'
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -17,7 +18,7 @@ const AuthScreen = () => {
         const user = await login(email, password);
         Alert.alert('Login Success', `Logged in as ${user.email}`);
       } else if (mode === 'register') {
-        const newUser = await register(email, password, confirmPassword);
+        const newUser = await register(name, email, password, confirmPassword);
         Alert.alert('Registration Success', `Registered as ${newUser.email}`);
       } else if (mode === 'reset') {
         const result = await resetPassword(email);
@@ -33,6 +34,16 @@ const AuthScreen = () => {
       <Text style={styles.title}>
         {isRegister ? 'Register' : isReset ? 'Reset Password' : 'Login'}
       </Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Name"
+        value={name}
+        onChangeText={setName}
+        keyboardType="default"
+        autoCapitalize="none"
+      />
+
 
       <TextInput
         style={styles.input}
