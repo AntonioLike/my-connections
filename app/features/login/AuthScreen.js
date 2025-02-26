@@ -35,15 +35,16 @@ const AuthScreen = () => {
         {isRegister ? 'Register' : isReset ? 'Reset Password' : 'Login'}
       </Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        value={name}
-        onChangeText={setName}
-        keyboardType="default"
-        autoCapitalize="none"
-      />
-
+      {isRegister && (
+        <TextInput
+          style={styles.input}
+          placeholder="Name"
+          value={name}
+          onChangeText={setName}
+          keyboardType="default"
+          autoCapitalize="none"
+        />
+      )}
 
       <TextInput
         style={styles.input}
@@ -86,7 +87,7 @@ const AuthScreen = () => {
         ) : (
           <View style={styles.linkContainer}>
             <TouchableOpacity onPress={() => setMode('register')}>
-              <Text style={styles.switchText}>Don't have an account? Register</Text>
+              <Text style={styles.switchText}>Don't have an account?</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setMode('reset')}>
               <Text style={styles.switchText}>Forgot Password?</Text>

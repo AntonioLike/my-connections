@@ -18,11 +18,15 @@ export const register = async (name, email, password, confirmPassword) => {
     }
 };
 
-// Login user (This assumes that you have a login route in your backend)
 export const login = async (email, password) => {
     try {
         const response = await axios.post(`${API_URL}/login`, { email, password });
-        return response.data; // Response contains user info and possibly a JWT token
+        const { token, user } = response.data;
+
+        // Store the token in localStorage
+        localStorage.setItem('token', token);
+
+        return { user, token };
     } catch (error) {
         console.error('Login error:', error.response ? error.response.data : error.message);
         throw error.response ? error.response.data : error.message;
