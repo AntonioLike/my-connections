@@ -1,14 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import SwipeDeck from './app/features/swiping-deck/SwipingDeck';
+import { StyleSheet, View } from 'react-native';
+import React from 'react';
+import AuthScreen from './app/features/login/AuthScreen';
 
 export default function App() {
-  console.log("app Start");
   return (
     <View style={styles.container}>
-      <Text>TheSmorgasBord</Text>
-      <SwipeDeck
-      firstCardId={0}/>
+      <AuthScreen />
       <StatusBar style="auto" />
     </View>
   );
