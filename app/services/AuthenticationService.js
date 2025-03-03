@@ -10,7 +10,10 @@ export const register = async (name, email, password, confirmPassword) => {
             throw new Error('Passwords do not match');
         }
 
-        const response = await axios.post(`${API_URL}/`, { name, email, password });
+        const response = await axios.post(`${API_URL}/`, { name, email, password },
+            {
+                headers: { "Content-Type": "application/json" }
+            });
         return response.data; // Response contains the newly created user
     } catch (error) {
         console.error('Registration error:', error.response ? error.response.data : error.message);
