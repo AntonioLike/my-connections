@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { login, register, resetPassword } from '../../services/AuthenticationService'; // Import the services
 
-const AuthScreen = () => {
-  const [mode, setMode] = useState('login'); // 'login', 'register', 'reset'
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+const AuthScreen: React.FC = () => {
+  const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login'); // Strict typing for mode
+  const [email, setEmail] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
 
   const isRegister = mode === 'register';
   const isReset = mode === 'reset';
@@ -16,7 +16,7 @@ const AuthScreen = () => {
     try {
       if (mode === 'login') {
         const user = await login(email, password);
-        Alert.alert('Login Success', `Logged in as ${user.email}`);
+        Alert.alert('Login Success', `Logged in as ${user.user.email}`);
       } else if (mode === 'register') {
         const newUser = await register(name, email, password, confirmPassword);
         Alert.alert('Registration Success', `Registered as ${newUser.email}`);
@@ -24,8 +24,8 @@ const AuthScreen = () => {
         const result = await resetPassword(email);
         Alert.alert('Password Reset', result.message);
       }
-    } catch (error) {
-      Alert.alert('Error', error.message);
+    } catch (error: any) {
+      Alert.alert('Error', error.message || 'An unknown error occurred');
     }
   };
 
