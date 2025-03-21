@@ -1,23 +1,11 @@
-import React from "react";
-import { StatusBar } from "expo-status-bar";
-import { createStackNavigator } from "@react-navigation/stack";
-import AuthScreen from "./features/auth/AuthScreen";
-import MainScreen from "./features/main/MainScreen";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { Text, View, Button } from 'react-native';
+import { router } from 'expo-router';
 
-const Stack = createStackNavigator();
-
-export default function Index() {
+export default function HomeScreen() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Main">
-        {() => (
-          <ProtectedRoute>
-            <MainScreen />
-          </ProtectedRoute>
-        )}
-      </Stack.Screen>
-    </Stack.Navigator>
+    <View>
+      <Text>Welcome to the app!</Text>
+      <Button title="Go to Login" onPress={() => router.push('/features/auth/AuthScreen')} />
+    </View>
   );
 }

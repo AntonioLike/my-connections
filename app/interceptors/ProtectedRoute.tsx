@@ -9,7 +9,17 @@ type RootStackParamList = {
     Main: undefined;
 };
 
+const checkStorage = async () => {
+    const asyncToken = await AsyncStorage.getItem("token");
+    const localToken = localStorage.getItem("token");
+
+    console.log("Token in AsyncStorage:", asyncToken);
+    console.log("Token in localStorage:", localToken);
+};
+
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    checkStorage();
+
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);

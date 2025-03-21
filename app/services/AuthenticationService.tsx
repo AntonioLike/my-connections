@@ -8,7 +8,6 @@ interface AuthResponse {
         id: string;
         name: string;
         email: string;
-        // Add any other user properties your backend returns
     };
     token: string;
 }
