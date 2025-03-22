@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { login, register, resetPassword } from '../../services/AuthenticationService'; // Import the services
+import { View, StyleSheet, Alert } from 'react-native';
+import {
+  TextInput,
+  Button,
+  Title,
+  Text,
+  useTheme
+} from 'react-native-paper';
+import { login, register, resetPassword } from '../../services/AuthenticationService';
 
 const AuthScreen: React.FC = () => {
-  const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login'); // Strict typing for mode
-  const [email, setEmail] = useState<string>('');
-  const [name, setName] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const isRegister = mode === 'register';
   const isReset = mode === 'reset';
+  const theme = useTheme();
 
   const handleSubmit = async () => {
     try {
@@ -31,67 +39,76 @@ const AuthScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
+      <Title style={styles.title}>
         {isRegister ? 'Register' : isReset ? 'Reset Password' : 'Login'}
-      </Text>
+      </Title>
 
       {isRegister && (
         <TextInput
-          style={styles.input}
-          placeholder="Name"
+          label="Name"
           value={name}
           onChangeText={setName}
-          keyboardType="default"
           autoCapitalize="none"
+          mode="outlined"
+          style={styles.input}
         />
       )}
 
       <TextInput
-        style={styles.input}
-        placeholder="Email"
+        label="Email"
         value={email}
         onChangeText={setEmail}
-        keyboardType="email-address"
         autoCapitalize="none"
+        keyboardType="email-address"
+        mode="outlined"
+        style={styles.input}
       />
 
       {!isReset && (
         <TextInput
-          style={styles.input}
-          placeholder="Password"
+          label="Password"
           value={password}
           onChangeText={setPassword}
-          secureTextEntry
           autoCapitalize="none"
+          secureTextEntry
+          mode="outlined"
+          style={styles.input}
         />
       )}
 
       {isRegister && (
         <TextInput
-          style={styles.input}
-          placeholder="Confirm Password"
+          label="Confirm Password"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
-          secureTextEntry
           autoCapitalize="none"
+          secureTextEntry
+          mode="outlined"
+          style={styles.input}
         />
       )}
 
-      <Button title={isRegister ? 'Register' : isReset ? 'Reset Password' : 'Login'} onPress={handleSubmit} />
+      <Button
+        mode="contained"
+        onPress={handleSubmit}
+        style={{ marginTop: 12 }}
+      >
+        {isRegister ? 'Register' : isReset ? 'Reset Password' : 'Login'}
+      </Button>
 
       <View style={styles.switchContainer}>
         {isRegister || isReset ? (
-          <TouchableOpacity onPress={() => setMode('login')}>
-            <Text style={styles.switchText}>Back to Login</Text>
-          </TouchableOpacity>
+          <Button onPress={() => setMode('login')} compact>
+            Back to Login
+          </Button>
         ) : (
           <View style={styles.linkContainer}>
-            <TouchableOpacity onPress={() => setMode('register')}>
-              <Text style={styles.switchText}>Don't have an account?</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setMode('reset')}>
-              <Text style={styles.switchText}>Forgot Password?</Text>
-            </TouchableOpacity>
+            <Button onPress={() => setMode('register')} compact>
+              Don't have an account?
+            </Button>
+            <Button onPress={() => setMode('reset')} compact>
+              Forgot Password?
+            </Button>
           </View>
         )}
       </View>
@@ -106,29 +123,18 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
     textAlign: 'center',
+    marginBottom: 20,
   },
   input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
+    marginBottom: 12,
   },
   switchContainer: {
     marginTop: 20,
     alignItems: 'center',
   },
-  switchText: {
-    color: 'blue',
-    textDecorationLine: 'underline',
-  },
   linkContainer: {
-    marginTop: 15,
+    marginTop: 10,
   },
 });
 
