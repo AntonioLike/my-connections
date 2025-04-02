@@ -1,5 +1,4 @@
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const API_URL = 'http://localhost:3000/user'; // Adjust according to your backend URL
 
@@ -43,9 +42,6 @@ export const login = async (email: string, password: string): Promise<AuthRespon
     try {
         const response = await axios.post<AuthResponse>(`${API_URL}/login`, { email, password });
         const { token, user } = response.data;
-
-        // Store the token in AsyncStorage
-        await AsyncStorage.setItem('token', token);
 
         return { user, token };
     } catch (error) {

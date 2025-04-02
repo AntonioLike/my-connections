@@ -3,7 +3,7 @@ import { View, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { Card, Text, Avatar } from "react-native-paper";
 import { Plus, Users, Settings, Heart } from "lucide-react-native";
-import { RootStackParamList } from "../../navigation/types"; // Adjust path to match your project structure
+import { RootStackParamList } from "../navigation/types"; // Adjust path to match your project structure
 
 const MainScreen: React.FC = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>(); // Apply the type fix

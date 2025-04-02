@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Animated, PanResponder } from 'react-native';
-import SwipingCard from '../swiping-card/SwipingCard';
+import { StyleSheet, View, ImageSourcePropType } from 'react-native';
+import SwipingCard from './SwipingCard';
 
-const cards = [
+const cards: ImageSourcePropType[] = [
   require('../../assets/images/cards/card1.jpg'),
   require('../../assets/images/cards/card2.jpg'),
   require('../../assets/images/cards/card3.jpg'),
@@ -20,10 +20,10 @@ const cards = [
   require('../../assets/images/cards/card15.jpg')
 ];
 
-const SwipeDeck = () => {
-  const [currentCardId, setCurrentCardId] = useState(0);
+const SwipeDeck: React.FC = () => {
+  const [currentCardId, setCurrentCardId] = useState<number>(0);
 
-  const handleSwipe = (isSwipeRight) => {
+  const handleSwipe = (isSwipeRight: boolean) => {
     if (cards.length > currentCardId + 1) {
       setCurrentCardId(currentCardId + 1);
     }
@@ -35,10 +35,18 @@ const SwipeDeck = () => {
         card={cards[currentCardId]}
         responseCallback={handleSwipe}
       />
-    )
+    );
   };
 
-  return <View>{renderCards()}</View>;
+  return <View style={styles.container}>{renderCards()}</View>;
+};
 
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
+});
+
 export default SwipeDeck;

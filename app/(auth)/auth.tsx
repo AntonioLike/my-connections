@@ -7,7 +7,8 @@ import {
   Text,
   useTheme
 } from 'react-native-paper';
-import { login, register, resetPassword } from '../../services/AuthenticationService';
+import { login, register, resetPassword } from '../services/AuthenticationService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthScreen: React.FC = () => {
   const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login');
@@ -24,6 +25,7 @@ const AuthScreen: React.FC = () => {
     try {
       if (mode === 'login') {
         const user = await login(email, password);
+        await AsyncStorage.setItem('authToken', user.token); // Save token
         Alert.alert('Login Success', `Logged in as ${user.user.email}`);
       } else if (mode === 'register') {
         const newUser = await register(name, email, password, confirmPassword);

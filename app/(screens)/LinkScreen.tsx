@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, FlatList, Alert, TouchableOpacity } from 'react-native';
-import { getUserToken, requestLink, getConfirmedLinks, deleteLink } from '../../services/LinkService';
+import { getUserToken, requestLink, getConfirmedLinks, deleteLink } from '../services/LinkService';
 
-const LinkScreen = () => {
-    const [userToken, setUserToken] = useState('');
-    const [targetToken, setTargetToken] = useState('');
-    const [linkedUsers, setLinkedUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
+interface Link {
+    id: number;
+    user1: { userToken: string };
+    user2: { userToken: string };
+}
+
+const LinkScreen: React.FC = () => {
+    const [userToken, setUserToken] = useState<string>('');
+    const [targetToken, setTargetToken] = useState<string>('');
+    const [linkedUsers, setLinkedUsers] = useState<Link[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         fetchUserToken();
@@ -40,17 +46,17 @@ const LinkScreen = () => {
             Alert.alert('Success', response.message);
             fetchLinkedUsers();
         } catch (error) {
-            Alert.alert('Error', error.message);
+            Alert.alert('Error', 'Failed to request link');
         }
     };
 
-    const handleDeleteLink = async (targetUserToken) => {
+    const handleDeleteLink = async (targetUserToken: string) => {
         try {
             const response = await deleteLink(userToken, targetUserToken);
             Alert.alert('Success', response.message);
             fetchLinkedUsers();
         } catch (error) {
-            Alert.alert('Error', error.message);
+            Alert.alert('Error', 'Failed to delete link');
         }
     };
 
