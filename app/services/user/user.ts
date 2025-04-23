@@ -7,15 +7,16 @@
  */
 import { ApiResponse, ApisauceInstance, create } from "apisauce"
 import Config from "../../config"
-import { GeneralApiProblem, getGeneralApiProblem } from "./apiProblem"
-import type { ApiConfig, ApiFeedResponse } from "./api.types"
-import type { EpisodeSnapshotIn } from "../../models/Episode"
+import { GeneralApiProblem, getGeneralApiProblem } from "../apiProblem"
+import type { ApiConfig } from "../api.types"
+import { User, UserSnapshotIn, UserSnapshotOut } from "@/models"
+import { GetUserResult } from "./user.types"
 
 /**
  * Configuring the apisauce instance.
  */
 export const DEFAULT_API_CONFIG: ApiConfig = {
-  url: Config.API_URL,
+  url: `${Config.API_URL}user/`,
   timeout: 10000,
 }
 
@@ -42,12 +43,12 @@ export class Api {
   }
 
   /**
-   * Gets a list of recent React Native Radio episodes.
+   * Gets user by Id
    */
-  async getEpisodes(): Promise<{ kind: "ok"; episodes: EpisodeSnapshotIn[] } | GeneralApiProblem> {
+  async getUserById(user: User): Promise<{ kind: "ok"; user: UserSnapshotIn } | GeneralApiProblem> {
     // make the api call
-    const response: ApiResponse<ApiFeedResponse> = await this.apisauce.get(
-      `api.json?rss_url=https%3A%2F%2Ffeeds.simplecast.com%2FhEI_f9Dx`,
+    const response: ApiResponse<UserSnapshotOut> = await this.apisauce.get(
+      `${user.id}`,
     )
 
     // the typical ways to die when calling an api
@@ -61,12 +62,9 @@ export class Api {
       const rawData = response.data
 
       // This is where we transform the data into the shape we expect for our MST model.
-      const episodes: EpisodeSnapshotIn[] =
-        rawData?.items.map((raw) => ({
-          ...raw,
-        })) ?? []
+      const user: UserSnapshotIn = rawData as UserSnapshotIn;
 
-      return { kind: "ok", episodes }
+      return { kind: "ok", user }
     } catch (e) {
       if (__DEV__ && e instanceof Error) {
         console.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
