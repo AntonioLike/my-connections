@@ -1,6 +1,8 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { User, UserModel } from "./User"
+import { userApi } from "@/services/user/user.api"
+import { UserResult } from "@/services/user/user.api.types"
 
 /**
  * Model description here for TypeScript hints.
@@ -13,7 +15,16 @@ export const UserStoreModel = types
   })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
-  .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
+  .actions((self) => ({
+    async register(user: User) {
+      const result: UserResult = await new userApi().register(user);
+      if (result.kind === "ok") {
+        self.user = UserModel.create(result.user);
+      } else {
+        console.tron.error(`Error registering: ${JSON.stringify(result)}`, [])
+      }
+    },
+  }))
 
 export interface UserStore extends Instance<typeof UserStoreModel> { }
 export interface UserStoreSnapshotOut extends SnapshotOut<typeof UserStoreModel> { }

@@ -11,5 +11,5 @@ export interface ApiConfig {
   /**
    * Milliseconds before we timeout the request.
    */
-  timeout: number
+  timeout?: number | 10000
 }
