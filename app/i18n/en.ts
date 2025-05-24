@@ -43,12 +43,16 @@ const en = {
     tapToLogIn: "Tap to log in!",
     hint: "Hint: you can use any email address and your favorite password :)",
   },
+  cardScreen: {
+    title: "Cards",
+  },
   demoNavigator: {
     componentsTab: "Components",
     debugTab: "Debug",
     communityTab: "Community",
     podcastListTab: "Podcast",
     connections: "Connections",
+    cards: "Cards",
   },
   demoCommunityScreen: {
     title: "Connect with the community",

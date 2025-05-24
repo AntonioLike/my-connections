@@ -34,7 +34,8 @@ export type AppStackParamList = {
   Demo: NavigatorScreenParams<DemoTabParamList>
   // 🔥 Your screens go here
   Connections: undefined
-	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  Card: undefined
+  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -85,13 +86,14 @@ const AppStack = observer(function AppStack() {
 
       {/** 🔥 Your screens go here */}
       <Stack.Screen name="Connections" component={Screens.ConnectionsScreen} />
-			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+      <Stack.Screen name="Card" component={Screens.CardScreen} />
+      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 })
 
 export interface NavigationProps
-  extends Partial<ComponentProps<typeof NavigationContainer<AppStackParamList>>> {}
+  extends Partial<ComponentProps<typeof NavigationContainer<AppStackParamList>>> { }
 
 export const AppNavigator = observer(function AppNavigator(props: NavigationProps) {
   const { themeScheme, navigationTheme, setThemeContextOverride, ThemeProvider } =

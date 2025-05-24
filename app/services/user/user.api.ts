@@ -11,7 +11,7 @@ const USER_API_CONFIG: ApiConfig = {
 }
 
 
-export class userApi extends api {
+export class UserApi extends api {
   constructor() {
     super(USER_API_CONFIG)
   }
@@ -61,3 +61,5 @@ export class userApi extends api {
     }
   }
 }
+
+export const userApi = new UserApi();

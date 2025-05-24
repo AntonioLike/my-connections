@@ -33,6 +33,8 @@ const palette = {
 
   overlay20: "rgba(25, 16, 21, 0.2)",
   overlay50: "rgba(25, 16, 21, 0.5)",
+
+  darkPlum: "#20162D"
 } as const
 
 export const colors = {
@@ -49,7 +51,7 @@ export const colors = {
   /**
    * The default text color in many components.
    */
-  text: palette.neutral800,
+  text: palette.neutral100,
   /**
    * Secondary text information.
    */
@@ -57,7 +59,7 @@ export const colors = {
   /**
    * The default color of the screen background.
    */
-  background: palette.neutral200,
+  background: palette.darkPlum,
   /**
    * The default border color.
    */
