@@ -1,53 +1,71 @@
-import React, { FC, useEffect } from "react"
+import React, { useEffect, useState } from "react"
+import { View, Text, ActivityIndicator, Pressable } from "react-native"
 import { observer } from "mobx-react-lite"
-import { TextStyle, View, ViewStyle } from "react-native"
-import { AppStackScreenProps } from "@/navigators"
-import { Screen, Text } from "@/components"
-import { spacing } from "@/theme"
-import { useStores } from "@/models"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "@/models" 
+import { useStores } from "../models"
+import { Card } from "../components/Card"
+import { AspectCard } from "@/components"
 
-interface CardScreenProps extends AppStackScreenProps<"Card"> { }
-
-
-export const CardScreen: FC<CardScreenProps> = observer(function CardScreen() {
-
-  const [refreshing, setRefreshing] = React.useState(false)
-
-  // Pull in one of our MST stores
+export const CardScreen = observer(() => {
   const { cardStore } = useStores()
-  const { cards } = cardStore
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const fetchCards = async () => {
+      setLoading(true)
+      await cardStore.getCards()
+      setCurrentIndex(0)
+      setLoading(false)
+    }
     fetchCards()
   }, [])
 
-  const fetchCards = () => {
-    setRefreshing(true)
-    cardStore.getCards()
-    setRefreshing(false)
+  const handleResponse = (response: "yes" | "no") => {
+    const currentCard = cardStore.cards[currentIndex]
+    cardStore.saveAnswer(currentCard.id, response)
+
+    if (currentIndex < cardStore.cards.length - 1) {
+      setCurrentIndex(currentIndex + 1)
+    } else {
+      setCurrentIndex(cardStore.cards.length) // go past the end
+    }
   }
 
-
-  // Pull in navigation via hook
-  // const navigation = useNavigation()
-  return (
-    <Screen style={$root} preset="scroll">
-      <View style={$header}>
-        <Text preset="heading" text="question" tx={"cardScreen:title"} />
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#000" />
       </View>
-    </Screen>
+    )
+  }
+
+  const currentCard = cardStore.cards[currentIndex]
+
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingHorizontal: 16 }}>
+      <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 16 }}>Cards</Text>
+
+      {currentCard ? (
+        <>
+          <AspectCard card={currentCard} />
+          <View style={{ flexDirection: "row", marginTop: 24 }}>
+            <Pressable
+              onPress={() => handleResponse("no")}
+              style={{ backgroundColor: "red", paddingVertical: 10, paddingHorizontal: 20, borderRadius: 999, marginRight: 12 }}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>No</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => handleResponse("yes")}
+              style={{ backgroundColor: "green", paddingVertical: 10, paddingHorizontal: 20, borderRadius: 999 }}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>Yes</Text>
+            </Pressable>
+          </View>
+        </>
+      ) : (
+        <Text style={{ marginTop: 20 }}>No more cards.</Text>
+      )}
+    </View>
   )
-
 })
-
-const $root: ViewStyle = {
-  flex: 1,
-  paddingHorizontal: spacing.lg,
-}
-
-const $header: TextStyle = {
-  marginTop: spacing.xxxl,
-  marginBottom: spacing.md,
-}
