@@ -8,7 +8,7 @@ import { CardsResult } from "./card.api.types"
 import { getSnapshot } from "mobx-state-tree"
 
 const CARD_API_CONFIG: ApiConfig = {
-  url: `${Config.API_URL}user/`,
+  url: `${Config.API_URL}card/`,
 }
 
 
@@ -18,29 +18,33 @@ export class CardApi extends api {
   }
 
   async getCards(userId: string): Promise<CardsResult> {
-    const response: ApiResponse<CardSnapshotIn[]> = await this.apisauce.get(`${userId}/`);
+    const response: ApiResponse<CardSnapshotIn[]> = await this.apisauce.get("");
 
-    const problem = this.handleProblem(response)
-    if (problem) return problem
+    const problem = this.handleProblem(response);
+    if (problem) return problem;
 
     try {
 
-      // This is where we transform the data into the shape we expect for our MST model.
       const cards: CardSnapshotOut[] =
         response.data?.map((raw) => {
-          const instance = CardModel.create(raw);
+          const transformed = {
+            ...raw,
+            imagePath: raw.imagePath ? `${Config.API_URL}${raw.imagePath}` : undefined,
+          };
+
+          const instance = CardModel.create(transformed);
           return getSnapshot(instance);
-        }) ?? []
+        }) ?? [];
 
-      return { kind: "ok", cards }
-
+      return { kind: "ok", cards };
     } catch (e) {
       if (__DEV__ && e instanceof Error) {
-        console.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
+        console.error(`Bad data: ${e.message}\n${response.data}`, e.stack);
       }
-      return { kind: "bad-data" }
+      return { kind: "bad-data" };
     }
   }
+
 }
 
 export const cardApi = new CardApi();

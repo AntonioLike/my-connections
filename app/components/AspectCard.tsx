@@ -10,7 +10,7 @@ export interface AspectCardProps {
    */
   card: {
     title: string
-    image?: string
+    imagePath?: string
   }
 
   /**
@@ -26,10 +26,10 @@ export const AspectCard = observer(function AspectCard(props: AspectCardProps) {
 
   return (
     <View style={$styles}>
-      {card.image ? (
-        <Image source={{ uri: card.image }} style={$image} resizeMode="cover" />
-      ) : null}
       <Text style={themed($title)}>{card.title}</Text>
+      {card.imagePath ? (
+        <Image source={{ uri: card.imagePath }} style={$image} resizeMode="cover" />
+      ) : null}
     </View>
   )
 })

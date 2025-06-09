@@ -10,7 +10,7 @@ export const CardStoreModel = types
     answers: types.optional(
       types.array(
         types.model({
-          cardId: types.string,
+          cardId: types.number,
           response: types.enumeration(["yes", "no"]),
         })
       ),
@@ -32,7 +32,7 @@ export const CardStoreModel = types
       }
     },
 
-    saveAnswer(cardId: string, response: "yes" | "no") {
+    saveAnswer(cardId: number, response: "yes" | "no") {
       self.answers.push({ cardId, response })
       // Later: you could call a backend here
     },

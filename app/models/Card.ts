@@ -7,9 +7,9 @@ import { withSetPropAction } from "./helpers/withSetPropAction"
 export const CardModel = types
   .model("Card")
   .props({
-    id: types.identifier,
+    id: types.identifierNumber,
     title: types.string,
-    image: types.maybe(types.string),
+    imagePath: types.maybe(types.string),
     like: types.maybe(types.boolean),
   })
   .actions(withSetPropAction)
@@ -18,5 +18,5 @@ export const CardModel = types
 export interface Card extends Instance<typeof CardModel> { }
 export interface CardSnapshotOut extends SnapshotOut<typeof CardModel> { }
 export interface CardSnapshotIn extends SnapshotIn<typeof CardModel> { }
-export const createCardDefaultModel = (id: string, title: string, image: string) =>
-  types.optional(CardModel, { id, title, image })
+export const createCardDefaultModel = (id: number, title: string, image: string) =>
+  types.optional(CardModel, { id, title, imagePath: image })
