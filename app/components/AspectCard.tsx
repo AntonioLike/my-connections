@@ -28,14 +28,14 @@ export const AspectCard = observer(function AspectCard(props: AspectCardProps) {
     <View style={$styles}>
       <Text style={themed($title)}>{card.title}</Text>
       {card.imagePath ? (
-        <Image source={{ uri: card.imagePath }} style={$image} resizeMode="cover" />
+        <Image source={{ uri: card.imagePath }} style={$image} resizeMode="contain" />
       ) : null}
     </View>
   )
 })
 
 const $container: ViewStyle = {
-  backgroundColor: "white",
+  backgroundColor: "transparent",
   padding: 16,
   borderRadius: 12,
   shadowColor: "#000",
