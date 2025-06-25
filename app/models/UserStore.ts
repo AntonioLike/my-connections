@@ -17,7 +17,7 @@ export const UserStoreModel = types
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({
     async register(user: User) {
-      const result: UserResult = await new userApi().register(user);
+      const result: UserResult = await userApi.register(user);
       if (result.kind === "ok") {
         self.user = UserModel.create(result.user);
       } else {
