@@ -3,32 +3,21 @@ import { observer } from "mobx-react-lite"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import { Text } from "@/components/Text"
+import { UserCardResponse } from "@/models"
 
-export interface AspectCardProps {
-  /**
-   * Card content (from CardModel).
-   */
-  card: {
-    title: string
-    imagePath?: string
-  }
-
-  /**
-   * Optional style override.
-   */
-  style?: StyleProp<ViewStyle>
+interface AspectCardProps {
+  card: UserCardResponse
 }
 
-export const AspectCard = observer(function AspectCard(props: AspectCardProps) {
-  const { style, card } = props
-  const $styles = [$container, style]
+export const AspectCard = observer(function AspectCard({ card }: AspectCardProps) {
+  const $styles = [$container]
   const { themed } = useAppTheme()
 
   return (
     <View style={$styles}>
-      <Text style={themed($title)}>{card.title}</Text>
-      {card.imagePath ? (
-        <Image source={{ uri: card.imagePath }} style={$image} resizeMode="contain" />
+      <Text style={themed($title)}>{card.cardTitle}</Text>
+      {card.cardImagePath ? (
+        <Image source={{ uri: card.cardImagePath }} style={$image} resizeMode="contain" />
       ) : null}
     </View>
   )

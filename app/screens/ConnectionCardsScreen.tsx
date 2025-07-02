@@ -2,32 +2,38 @@ import React, { useEffect, useState } from "react"
 import { View, Text, ActivityIndicator, Pressable } from "react-native"
 import { observer } from "mobx-react-lite"
 import { useStores } from "../models"
-import { Card } from "../components/Card"
 import { AspectCard } from "@/components"
+import { AppStackScreenProps } from "@/navigators"
 
-export const CardScreen = observer(() => {
-  const { cardStore } = useStores()
+interface ConnectionCardsScreenProps extends AppStackScreenProps<"ConnectionCards"> { }
+
+export const ConnectionCardsScreen = observer(({ route }: ConnectionCardsScreenProps) => {
+  const { userCardResponseStore, userStore } = useStores()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(true)
+  const { linkToken } = route.params
 
   useEffect(() => {
     const fetchCards = async () => {
       setLoading(true)
-      await cardStore.getCards()
+      //const userToken = await userStore.user?.userToken
+      const userToken = '110000d'
+      const linkToken = '3'
+      await userCardResponseStore.fetchResponsesForLink(userToken, linkToken)
       setCurrentIndex(0)
       setLoading(false)
     }
     fetchCards()
-  }, [])
+  }, [linkToken])
 
   const handleResponse = (response: "yes" | "no") => {
-    const currentCard = cardStore.cards[currentIndex]
-    cardStore.saveAnswer(currentCard.id, response)
+    const currentCard = userCardResponseStore.responses[currentIndex]
+    userCardResponseStore.setResponse({ ...currentCard, response })
 
-    if (currentIndex < cardStore.cards.length - 1) {
+    if (currentIndex < userCardResponseStore.responses.length - 1) {
       setCurrentIndex(currentIndex + 1)
     } else {
-      setCurrentIndex(cardStore.cards.length) // go past the end
+      setCurrentIndex(userCardResponseStore.responses.length) // Finished
     }
   }
 
@@ -39,7 +45,7 @@ export const CardScreen = observer(() => {
     )
   }
 
-  const currentCard = cardStore.cards[currentIndex]
+  const currentCard = userCardResponseStore.responses[currentIndex]
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingHorizontal: 16 }}>

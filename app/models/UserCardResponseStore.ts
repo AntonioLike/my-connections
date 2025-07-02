@@ -7,11 +7,11 @@ export const UserCardResponseStoreModel = types
     .model("UserCardResponseStore", {
         responses: types.array(UserCardResponseModel),
         filteredOnly: false,
-        selectedLinkId: types.maybe(types.number),
+        selectedLinkId: types.maybe(types.string),
     })
     .actions(withSetPropAction)
     .actions((store) => ({
-        async fetchResponsesForLink(userToken: string, linkId: number) {
+        async fetchResponsesForLink(userToken: string, linkId: string) {
             const result = await userCardResponseApi.getAllCardsWithResponses(userToken, linkId)
             if (result.kind === "ok") {
                 store.setProp("responses", result.responses)

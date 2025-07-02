@@ -4,7 +4,7 @@ import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
 import { translate } from "@/i18n"
-import { DemoCommunityScreen, DemoShowroomScreen, DemoDebugScreen, ConnectionsScreen, CardScreen } from "../screens"
+import { DemoCommunityScreen, DemoShowroomScreen, DemoDebugScreen, ConnectionsScreen } from "../screens"
 import { DemoPodcastListScreen } from "../screens/DemoPodcastListScreen"
 import type { ThemedStyle } from "@/theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
@@ -113,16 +113,6 @@ export function DemoNavigator() {
         }}
       />
 
-      <Tab.Screen
-        name="Card"
-        component={CardScreen}
-        options={{
-          tabBarLabel: translate("demoNavigator:cards"),
-          tabBarIcon: ({ focused }) => (
-            <Icon icon="components" color={focused ? colors.tint : colors.tintInactive} size={30} />
-          ),
-        }}
-      />
     </Tab.Navigator>
   )
 }

@@ -1,5 +1,5 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
-import { CardStoreModel } from "./CardStore"
+import { UserCardResponseStoreModel } from "./UserCardResponseStore"
 import { UserStoreModel } from "./UserStore"
 import { AuthenticationStoreModel } from "./AuthenticationStore"
 import { EpisodeStoreModel } from "./EpisodeStore"
@@ -8,7 +8,7 @@ import { EpisodeStoreModel } from "./EpisodeStore"
  * A RootStore model.
  */
 export const RootStoreModel = types.model("RootStore").props({
-  cardStore: types.optional(CardStoreModel, {} as any),
+  userCardResponseStore: types.optional(UserCardResponseStoreModel, {} as any),
   userStore: types.optional(UserStoreModel, {} as any),
   authenticationStore: types.optional(AuthenticationStoreModel, {}),
   episodeStore: types.optional(EpisodeStoreModel, {}),
@@ -17,8 +17,8 @@ export const RootStoreModel = types.model("RootStore").props({
 /**
  * The RootStore instance.
  */
-export interface RootStore extends Instance<typeof RootStoreModel> {}
+export interface RootStore extends Instance<typeof RootStoreModel> { }
 /**
  * The data of a RootStore.
  */
-export interface RootStoreSnapshot extends SnapshotOut<typeof RootStoreModel> {}
+export interface RootStoreSnapshot extends SnapshotOut<typeof RootStoreModel> { }

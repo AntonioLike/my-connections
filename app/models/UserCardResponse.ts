@@ -7,8 +7,10 @@ import { withSetPropAction } from "./helpers/withSetPropAction"
 export const UserCardResponseModel = types
   .model("UserCardResponse", {
     id: types.identifierNumber,
-    linkId: types.number,
+    linkId: types.string,
     cardId: types.number,
+    cardTitle: types.string,
+    cardImagePath: types.string,
     response: types.enumeration("Response", ["yes", "no"]),
   })
   .actions(withSetPropAction)
@@ -18,10 +20,3 @@ export const UserCardResponseModel = types
 export interface UserCardResponse extends Instance<typeof UserCardResponseModel> { }
 export interface UserCardResponseSnapshotOut extends SnapshotOut<typeof UserCardResponseModel> { }
 export interface UserCardResponseSnapshotIn extends SnapshotIn<typeof UserCardResponseModel> { }
-export const createUserCardResponseDefaultModel = () =>
-  types.optional(UserCardResponseModel, {
-    id: 0,
-    linkId: 0,
-    cardId: 0,
-    response: "no",
-  })
