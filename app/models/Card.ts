@@ -9,8 +9,7 @@ export const CardModel = types
   .props({
     id: types.identifierNumber,
     title: types.string,
-    imagePath: types.maybe(types.string),
-    like: types.maybe(types.boolean),
+    imagePath: types.maybe(types.string)
   })
   .actions(withSetPropAction)
   .actions((self) => ({}))

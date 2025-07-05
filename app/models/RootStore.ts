@@ -3,11 +3,13 @@ import { UserCardResponseStoreModel } from "./UserCardResponseStore"
 import { UserStoreModel } from "./UserStore"
 import { AuthenticationStoreModel } from "./AuthenticationStore"
 import { EpisodeStoreModel } from "./EpisodeStore"
+import { CardStoreModel } from "./CardStore"
 
 /**
  * A RootStore model.
  */
 export const RootStoreModel = types.model("RootStore").props({
+  cardStore: types.optional(CardStoreModel, {} as any),
   userCardResponseStore: types.optional(UserCardResponseStoreModel, {} as any),
   userStore: types.optional(UserStoreModel, {} as any),
   authenticationStore: types.optional(AuthenticationStoreModel, {}),

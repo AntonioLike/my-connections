@@ -9,8 +9,6 @@ export const UserCardResponseModel = types
     id: types.identifierNumber,
     linkId: types.string,
     cardId: types.number,
-    cardTitle: types.string,
-    cardImagePath: types.string,
     response: types.enumeration("Response", ["yes", "no"]),
   })
   .actions(withSetPropAction)
