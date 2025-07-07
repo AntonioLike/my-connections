@@ -17,7 +17,7 @@ export class CardApi extends api {
     super(CARD_API_CONFIG)
   }
 
-  async getCards(userId: string): Promise<CardsResult> {
+  async getCards(): Promise<CardsResult> {
     const response: ApiResponse<CardSnapshotIn[]> = await this.apisauce.get("");
 
     const problem = this.handleProblem(response);

@@ -1,5 +1,6 @@
 import { Instance, SnapshotOut, SnapshotIn, types } from "mobx-state-tree"
 import { CardModel, CardSnapshotIn } from "../models/Card"
+import { cardApi } from "@/services"
 
 /**
  * A CardStore model.
@@ -10,11 +11,19 @@ export const CardStoreModel = types
         cards: types.array(CardModel),
     })
     .actions((store) => ({
-        setCards(snapshots: CardSnapshotIn[]) {
-            const models = snapshots.map(CardModel.create)
-            store.cards.replace(models)
+        async fetchCards() {
+            const result = await cardApi.getCards();
+            if (result.kind === "ok") {
+                // CardSnapshotOut is usually compatible with SnapshotIn
+                const snapshots = result.cards;
+                const models = snapshots.map(CardModel.create)
+                store.cards.replace(models)
+            } else {
+                console.error("Error fetching cards:", result)
+            }
         }
-    }))
+    }
+    ))
 
 export interface CardStore extends Instance<typeof CardStoreModel> { }
 export interface CardStoreSnapshotOut extends SnapshotOut<typeof CardStoreModel> { }
