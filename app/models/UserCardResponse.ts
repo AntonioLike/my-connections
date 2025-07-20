@@ -6,10 +6,10 @@ import { withSetPropAction } from "./helpers/withSetPropAction"
  */
 export const UserCardResponseModel = types
   .model("UserCardResponse", {
-    id: types.identifierNumber,
+    userId: types.string,
     linkId: types.string,
     cardId: types.number,
-    response: types.enumeration("Response", ["yes", "no"]),
+    response: types.maybeNull(types.enumeration("Response", ["yes", "no"])),
   })
   .actions(withSetPropAction)
   .views((self) => ({}))

@@ -6,7 +6,6 @@ import { userCardResponseApi } from "@/services/user-card-response/user.card.res
 export const UserCardResponseStoreModel = types
     .model("UserCardResponseStore", {
         responses: types.array(UserCardResponseModel),
-        filteredOnly: false,
         selectedLinkId: types.maybe(types.string),
     })
     .actions(withSetPropAction)
