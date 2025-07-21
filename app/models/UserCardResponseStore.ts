@@ -6,11 +6,11 @@ import { userCardResponseApi } from "@/services/user-card-response/user.card.res
 export const UserCardResponseStoreModel = types
     .model("UserCardResponseStore", {
         responses: types.array(UserCardResponseModel),
-        selectedLinkId: types.maybe(types.string),
+        selectedLinkId: types.maybe(types.number),
     })
     .actions(withSetPropAction)
     .actions((store) => ({
-        async fetchResponsesForLink(userToken: string, linkId: string) {
+        async fetchResponsesForLink(userToken: string, linkId: number) {
             const result = await userCardResponseApi.getAllCardsWithResponses(userToken, linkId)
             if (result.kind === "ok") {
                 store.setProp("responses", result.responses)
@@ -36,41 +36,51 @@ export const UserCardResponseStoreModel = types
             } else {
                 console.error("Failed to set response:", result)
             }
-        }
+        },
     }))
     .views((store) => {
-        const responsesForSelectedLink = () => {
-            if (!store.selectedLinkId) return []
-            return store.responses.filter((r) => r.linkId === store.selectedLinkId)
-        }
+        const allForSelectedLink = () =>
+            store.selectedLinkId != null
+                ? store.responses.filter((r) => r.linkId === store.selectedLinkId)
+                : []
 
         return {
+            /** All responses for the selected link */
             get responsesForSelectedLink() {
-                return responsesForSelectedLink()
+                return allForSelectedLink()
             },
 
+            /** Responses where the user answered "yes" */
             get yesResponses() {
-                return responsesForSelectedLink().filter((r) => r.response === "yes")
+                return allForSelectedLink().filter((r) => r.response === "yes")
             },
 
+            /** Responses where the user answered "no" */
             get noResponses() {
-                return responsesForSelectedLink().filter((r) => r.response === "no")
+                return allForSelectedLink().filter((r) => r.response === "no")
             },
 
+            /** Responses where the user hasn't answered yet */
+            get unansweredResponses() {
+                return allForSelectedLink().filter((r) => r.response === null)
+            },
+
+            /** Count of "yes" responses */
             get countYes() {
-                return responsesForSelectedLink().filter((r) => r.response === "yes").length
+                return this.yesResponses.length
             },
 
+            /** Count of "no" responses */
             get countNo() {
-                return responsesForSelectedLink().filter((r) => r.response === "no").length
+                return this.noResponses.length
             },
 
+            /** Whether the user has responded to a given card */
             hasRespondedToCard(cardId: number) {
-                return responsesForSelectedLink().some((r) => r.cardId === cardId)
+                return allForSelectedLink().some((r) => r.cardId === cardId)
             },
         }
     })
-
 
 export interface UserCardResponseStore extends Instance<typeof UserCardResponseStoreModel> { }
 export interface UserCardResponseStoreSnapshot extends SnapshotOut<typeof UserCardResponseStoreModel> { }

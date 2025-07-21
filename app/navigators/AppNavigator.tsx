@@ -35,7 +35,7 @@ export type AppStackParamList = {
   // 🔥 Your screens go here
   Connections: undefined
   Card: undefined
-  ConnectionCards: { linkToken: string }
+  ConnectionCards: { linkId: Number }
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 

@@ -8,32 +8,32 @@ import { AppStackScreenProps } from "@/navigators"
 interface ConnectionCardsScreenProps extends AppStackScreenProps<"ConnectionCards"> { }
 
 export const ConnectionCardsScreen = observer(({ route }: ConnectionCardsScreenProps) => {
-  const { userCardResponseStore, userStore } = useStores()
+  const { userCardResponseStore, cardStore } = useStores()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(true)
-  const { linkToken } = route.params
+  const linkId = route.params
 
   useEffect(() => {
     const fetchCards = async () => {
       setLoading(true)
       //const userToken = await userStore.user?.userToken
-      const userToken = '110000d'
-      const linkToken = '3'
-      await userCardResponseStore.fetchResponsesForLink(userToken, linkToken)
+      const userToken = 'E3MD788V52'
+      const linkId = 4
+      await userCardResponseStore.fetchResponsesForLink(userToken, linkId)
       setCurrentIndex(0)
       setLoading(false)
     }
     fetchCards()
-  }, [linkToken])
+  }, [linkId])
 
   const handleResponse = (response: "yes" | "no") => {
-    const currentCard = userCardResponseStore.responses[currentIndex]
+    const currentCard = userCardResponseStore.unansweredResponses[currentIndex]
     userCardResponseStore.setResponse({ ...currentCard, response })
 
-    if (currentIndex < userCardResponseStore.responses.length - 1) {
+    if (currentIndex < userCardResponseStore.unansweredResponses.length - 1) {
       setCurrentIndex(currentIndex + 1)
     } else {
-      setCurrentIndex(userCardResponseStore.responses.length) // Finished
+      setCurrentIndex(userCardResponseStore.unansweredResponses.length) // Finished
     }
   }
 
@@ -45,7 +45,8 @@ export const ConnectionCardsScreen = observer(({ route }: ConnectionCardsScreenP
     )
   }
 
-  const currentCard = userCardResponseStore.responses[currentIndex]
+  const currentResponse = userCardResponseStore.unansweredResponses[currentIndex];
+  const currentCard = cardStore.cards.find((card) => card.id === currentResponse.cardId);
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingHorizontal: 16 }}>

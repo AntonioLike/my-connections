@@ -6,8 +6,8 @@ import { withSetPropAction } from "./helpers/withSetPropAction"
  */
 export const UserCardResponseModel = types
   .model("UserCardResponse", {
-    userId: types.string,
-    linkId: types.string,
+    userToken: types.string,
+    linkId: types.number,
     cardId: types.number,
     response: types.maybeNull(types.enumeration("Response", ["yes", "no"])),
   })

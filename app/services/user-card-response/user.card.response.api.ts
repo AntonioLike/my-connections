@@ -27,10 +27,10 @@ export class UserCardResponseApi extends api {
    */
   async getAllCardsWithResponses(
     userToken: string,
-    linkId: string,
+    linkId: number,
   ): Promise<UserCardResponseListResult> {
     const response: ApiResponse<UserCardResponseSnapshotOut[]> = await this.apisauce.get(
-      `all-cards/${userToken}/${linkId}`,
+      `${userToken}/${linkId}`,
     )
 
     const problem = this.handleProblem(response)

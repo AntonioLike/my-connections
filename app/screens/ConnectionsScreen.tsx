@@ -8,22 +8,22 @@ import { useNavigation } from "@react-navigation/native"
 interface ConnectionsScreenProps extends AppStackScreenProps<"Connections"> { }
 
 const mockConnections = [
-  { id: "1", name: "Alice", linkToken: "token-alice" },
-  { id: "2", name: "Bob", linkToken: "token-bob" },
+  { id: "1", name: "Alice", linkId: 1 },
+  { id: "2", name: "Bob", linkId: 2 },
 ]
 
 export const ConnectionsScreen: FC<ConnectionsScreenProps> = observer(function ConnectionsScreen() {
   const navigation = useNavigation<AppStackScreenProps<"ConnectionCards">["navigation"]>()
 
-  const goToCards = (linkToken: string) => {
-    navigation.navigate("ConnectionCards", { linkToken })
+  const goToCards = (linkId: Number) => {
+    navigation.navigate("ConnectionCards", { linkId })
   }
 
   return (
     <Screen style={$root} preset="scroll">
       <Text text="Your Connections" style={$title} />
       {mockConnections.map((conn) => (
-        <Pressable key={conn.id} onPress={() => goToCards(conn.linkToken)} style={$card}>
+        <Pressable key={conn.id} onPress={() => goToCards(conn.linkId)} style={$card}>
           <Text text={conn.name} />
         </Pressable>
       ))}
