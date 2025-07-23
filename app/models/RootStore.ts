@@ -4,6 +4,7 @@ import { UserStoreModel } from "./UserStore"
 import { AuthenticationStoreModel } from "./AuthenticationStore"
 import { EpisodeStoreModel } from "./EpisodeStore"
 import { CardStoreModel } from "./CardStore"
+import { ConnectionStoreModel } from "./ConnectionStore"
 
 /**
  * A RootStore model.
@@ -13,6 +14,7 @@ export const RootStoreModel = types.model("RootStore").props({
   userCardResponseStore: types.optional(UserCardResponseStoreModel, {} as any),
   userStore: types.optional(UserStoreModel, {} as any),
   authenticationStore: types.optional(AuthenticationStoreModel, {}),
+  connectionStore: types.optional(ConnectionStoreModel, { connections: [] }),
   episodeStore: types.optional(EpisodeStoreModel, {}),
 })
 

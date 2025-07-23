@@ -2,7 +2,7 @@ import { UserCardResponseModel } from "./UserCardResponse"
 
 test("can be created", () => {
   const instance = UserCardResponseModel.create({
-    id: 0,
+    userToken: "0",
     linkId: 0,
     cardId: 0,
     response: ""

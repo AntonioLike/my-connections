@@ -45,8 +45,15 @@ export const ConnectionCardsScreen = observer(({ route }: ConnectionCardsScreenP
     )
   }
 
-  const currentResponse = userCardResponseStore.unansweredResponses[currentIndex];
-  const currentCard = cardStore.cards.find((card) => card.id === currentResponse.cardId);
+  const currentResponse =
+    currentIndex < userCardResponseStore.unansweredResponses.length
+      ? userCardResponseStore.unansweredResponses[currentIndex]
+      : null
+
+  const currentCard = currentResponse
+    ? cardStore.cards.find((card) => card.id === currentResponse.cardId)
+    : null
+
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingHorizontal: 16 }}>
@@ -58,21 +65,33 @@ export const ConnectionCardsScreen = observer(({ route }: ConnectionCardsScreenP
           <View style={{ flexDirection: "row", marginTop: 24 }}>
             <Pressable
               onPress={() => handleResponse("no")}
-              style={{ backgroundColor: "red", paddingVertical: 10, paddingHorizontal: 20, borderRadius: 999, marginRight: 12 }}
+              style={{
+                backgroundColor: "red",
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                borderRadius: 999,
+                marginRight: 12,
+              }}
             >
               <Text style={{ color: "white", fontWeight: "bold" }}>No</Text>
             </Pressable>
             <Pressable
               onPress={() => handleResponse("yes")}
-              style={{ backgroundColor: "green", paddingVertical: 10, paddingHorizontal: 20, borderRadius: 999 }}
+              style={{
+                backgroundColor: "green",
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                borderRadius: 999,
+              }}
             >
               <Text style={{ color: "white", fontWeight: "bold" }}>Yes</Text>
             </Pressable>
           </View>
         </>
       ) : (
-        <Text style={{ marginTop: 20 }}>No more cards.</Text>
+        <Text style={{ marginTop: 20, fontSize: 16 }}>No more cards.</Text>
       )}
+
     </View>
   )
 })
