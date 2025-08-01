@@ -38,11 +38,10 @@ export class ConnectionApi extends api {
     /**
      * Creates a link between two user tokens
      */
-    async linkWithToken(myToken: string, otherToken: string): Promise<LinkRequestResult | GeneralApiProblem> {
-        const response: ApiResponse<ConnectionSnapshotIn> = await this.apisauce.post(`link`, {
-            myToken,
-            otherToken,
-        })
+    async linkWithToken(userToken: string, targetToken: string): Promise<LinkRequestResult | GeneralApiProblem> {
+        const response: ApiResponse<ConnectionSnapshotIn> = await this.apisauce.post(
+            `link?userToken=${encodeURIComponent(userToken)}&targetToken=${encodeURIComponent(targetToken)}`
+        )
 
         const problem = this.handleProblem(response)
         if (problem) return problem
@@ -57,6 +56,7 @@ export class ConnectionApi extends api {
             return { kind: "bad-data" }
         }
     }
+
 }
 
 export const connectionApi = new ConnectionApi()

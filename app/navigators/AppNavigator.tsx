@@ -30,7 +30,7 @@ import { ComponentProps } from "react"
  */
 export type AppStackParamList = {
   Welcome: undefined
-  Login: undefined
+  Auth: undefined
   Demo: NavigatorScreenParams<DemoTabParamList>
   // 🔥 Your screens go here
   Connections: undefined
@@ -71,9 +71,9 @@ const AppStack = observer(function AppStack() {
           backgroundColor: colors.background,
         },
       }}
-      initialRouteName={isAuthenticated ? "Welcome" : "Login"}
+      initialRouteName={isAuthenticated() ? "Welcome" : "Auth"}
     >
-      {isAuthenticated ? (
+      {isAuthenticated() ? (
         <>
           <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
 
@@ -81,7 +81,7 @@ const AppStack = observer(function AppStack() {
         </>
       ) : (
         <>
-          <Stack.Screen name="Login" component={Screens.LoginScreen} />
+          <Stack.Screen name="Auth" component={Screens.AuthScreen} />
         </>
       )}
 

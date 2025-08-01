@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite"
 import { AppStackScreenProps } from "@/navigators"
 import { Screen, Text } from "@/components"
 import { useNavigation } from "@react-navigation/native"
+import { AddNewConnection } from "@/components/AddNewConnection"
 
 interface ConnectionsScreenProps extends AppStackScreenProps<"Connections"> { }
 
@@ -22,11 +23,14 @@ export const ConnectionsScreen: FC<ConnectionsScreenProps> = observer(function C
   return (
     <Screen style={$root} preset="scroll">
       <Text text="Your Connections" style={$title} />
+
       {mockConnections.map((conn) => (
         <Pressable key={conn.id} onPress={() => goToCards(conn.linkId)} style={$card}>
           <Text text={conn.name} />
         </Pressable>
       ))}
+
+      <AddNewConnection style={$addConnection} />
     </Screen>
   )
 })
@@ -46,3 +50,8 @@ const $card: ViewStyle = {
   borderRadius: 8,
   marginBottom: 10,
 }
+
+const $addConnection: ViewStyle = {
+  marginBottom: 24,
+}
+
