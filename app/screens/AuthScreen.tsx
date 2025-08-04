@@ -1,3 +1,4 @@
+// AuthScreen.tsx
 import { observer } from "mobx-react-lite"
 import { ComponentType, FC, useEffect, useMemo, useRef, useState } from "react"
 import { TextInput, TextStyle, View, ViewStyle } from "react-native"
@@ -30,8 +31,10 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen(_pro
     authenticationStore: {
       authEmail,
       authPassword,
+      authName,
       setAuthEmail,
       setAuthPassword,
+      setAuthName,
       handleAuth,
       validationError,
     },
@@ -45,15 +48,17 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen(_pro
   useEffect(() => {
     setAuthEmail("")
     setAuthPassword("")
+    setAuthName("")
     return () => {
       setAuthEmail("")
       setAuthPassword("")
+      setAuthName("")
     }
   }, [setAuthEmail])
 
   useEffect(() => {
     if (authError) setAuthError("")
-  }, [authEmail, authPassword])
+  }, [authEmail, authPassword, authName])
 
   const error = isSubmitted ? validationError(authMode) : ""
 
@@ -113,6 +118,21 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen(_pro
         <Text tx="loginScreen:hint" size="sm" weight="light" style={themed($hint)} />
       )}
 
+      {authMode === "register" && (
+        <TextField
+          value={authName}
+          onChangeText={setAuthName}
+          containerStyle={themed($textField)}
+          autoCapitalize="words"
+          autoCorrect={false}
+          labelTx="loginScreen:nameFieldLabel"
+          placeholderTx="loginScreen:nameFieldPlaceholder"
+          helper={error}
+          status={error ? "error" : undefined}
+          onSubmitEditing={() => authPasswordInput.current?.focus()}
+        />
+      )}
+
       <TextField
         value={authEmail}
         onChangeText={setAuthEmail}
@@ -161,7 +181,6 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen(_pro
         onPress={handleSubmit}
       />
 
-      {/* Mode toggle buttons */}
       <View style={{ marginTop: spacing.md }}>
         {authMode === "login" && (
           <>

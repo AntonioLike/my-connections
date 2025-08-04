@@ -39,6 +39,8 @@ const en = {
     tapToLogIn: "Log In",
     tapToRegister: "Create Account",
     tapToReset: "Send Reset Link",
+    nameFieldLabel: "Name",
+    nameFieldPlaceholder: "Your name",
     emailFieldLabel: "Email",
     emailFieldPlaceholder: "you@example.com",
     passwordFieldLabel: "Password",
