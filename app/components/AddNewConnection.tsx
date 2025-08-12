@@ -60,8 +60,10 @@ export const AddNewConnection = observer(function AddNewConnection(
         onChangeText={setUserTokenInput}
         placeholder="Enter user token"
         autoCapitalize="none"
-        style={$input}
+        style={themed($input)}
+        placeholderTextColor={themed(({ colors }) => colors.palette.neutral500)}
       />
+
       <Pressable onPress={handleAddConnection} style={themed($button)}>
         <Text style={$buttonText}>Add</Text>
       </Pressable>
@@ -81,13 +83,16 @@ const $text: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
   marginBottom: 8,
 })
 
-const $input: ViewStyle = {
+const $input: ThemedStyle<TextStyle> = ({ colors }) => ({
   borderWidth: 1,
-  borderColor: "#ccc",
+  borderColor: colors.palette.neutral400,
   borderRadius: 6,
   padding: 10,
   marginBottom: 12,
-}
+  backgroundColor: colors.background,
+  color: colors.text,
+})
+
 
 const $button: ThemedStyle<ViewStyle> = ({ colors }) => ({
   backgroundColor: colors.palette.primary500,

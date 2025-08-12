@@ -1,10 +1,11 @@
 import { FC } from "react"
-import { View, Pressable, ViewStyle } from "react-native"
+import { ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { AppStackScreenProps } from "@/navigators"
-import { Screen, Text } from "@/components"
+import { Button, Screen, Text } from "@/components"
 import { useNavigation } from "@react-navigation/native"
 import { AddNewConnection } from "@/components/AddNewConnection"
+import { useStores } from "@/models"
 
 interface ConnectionsScreenProps extends AppStackScreenProps<"Connections"> { }
 
@@ -16,6 +17,8 @@ const mockConnections = [
 export const ConnectionsScreen: FC<ConnectionsScreenProps> = observer(function ConnectionsScreen() {
   const navigation = useNavigation<AppStackScreenProps<"ConnectionCards">["navigation"]>()
 
+  const { connectionStore } = useStores()
+
   const goToCards = (linkId: Number) => {
     navigation.navigate("ConnectionCards", { linkId })
   }
@@ -25,9 +28,9 @@ export const ConnectionsScreen: FC<ConnectionsScreenProps> = observer(function C
       <Text text="Your Connections" style={$title} />
 
       {mockConnections.map((conn) => (
-        <Pressable key={conn.id} onPress={() => goToCards(conn.linkId)} style={$card}>
-          <Text text={conn.name} />
-        </Pressable>
+        <Button key={conn.id} onPress={() => goToCards(conn.linkId)} preset="default" style={$card}>
+          {conn.name}
+        </Button>
       ))}
 
       <AddNewConnection style={$addConnection} />
@@ -45,7 +48,6 @@ const $title: ViewStyle = {
 }
 
 const $card: ViewStyle = {
-  backgroundColor: "#ddd",
   padding: 12,
   borderRadius: 8,
   marginBottom: 10,
