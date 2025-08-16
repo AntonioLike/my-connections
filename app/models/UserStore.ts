@@ -16,13 +16,8 @@ export const UserStoreModel = types
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({
-    async register(user: User) {
-      const result: UserResult = await userApi.register(user);
-      if (result.kind === "ok") {
-        self.user = UserModel.create(result.user);
-      } else {
-        console.tron.error(`Error registering: ${JSON.stringify(result)}`, [])
-      }
+    setUser(userData: any) {
+      self.user = UserModel.create(userData)
     },
   }))
 

@@ -1,5 +1,6 @@
 import { Instance, SnapshotOut, flow, types } from "mobx-state-tree"
 import { authApi } from "@/services/auth/auth.api"
+import { UserStore } from "./UserStore"
 
 export const AuthenticationStoreModel = types
   .model("AuthenticationStore", {
@@ -54,7 +55,10 @@ export const AuthenticationStoreModel = types
       store.authName = ""
     }
 
-    const handleAuth = flow(function* (authMode: "login" | "register" | "forgot") {
+    const handleAuth = flow(function* (
+      authMode: "login" | "register" | "forgot",
+      userStore: UserStore
+    ) {
       const error = store.validationError(authMode)
       if (error) return error
 
@@ -69,6 +73,9 @@ export const AuthenticationStoreModel = types
           const result = yield authApi.login(credentials)
           if (result.kind === "ok") {
             store.authToken = result.data.token
+            if (userStore && result.data.user) {
+              userStore.setUser(result.data.user) // Set user data in userStore
+            }
           } else {
             return result.kind
           }

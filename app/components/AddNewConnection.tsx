@@ -1,23 +1,12 @@
 import { useState } from "react"
-import {
-  StyleProp,
-  TextStyle,
-  View,
-  ViewStyle,
-  TextInput,
-  Pressable,
-  Alert,
-} from "react-native"
+import { StyleProp, TextStyle, View, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
-import { Text } from "@/components/Text"
+import { Text, TextField, Button } from "@/components"
 import { useStores } from "@/models"
 
 export interface AddNewConnectionProps {
-  /**
-   * An optional style override useful for padding & margin.
-   */
   style?: StyleProp<ViewStyle>
 }
 
@@ -30,43 +19,52 @@ export const AddNewConnection = observer(function AddNewConnection(
   const { connectionStore, userStore } = useStores()
 
   const [userTokenInput, setUserTokenInput] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
 
   const handleAddConnection = async () => {
+    setError(null)
+    setSuccess(null)
+
     const currentUserToken = userStore.user?.userToken
     if (!currentUserToken) {
-      Alert.alert("Error", "You must be logged in to add a connection.")
+      setError("You must be logged in to add a connection.")
       return
     }
 
     if (!userTokenInput.trim()) {
-      Alert.alert("Input Required", "Please enter a valid user token.")
+      setError("Please enter a valid user token.")
       return
     }
 
     try {
       await connectionStore.linkWithToken(currentUserToken, userTokenInput.trim())
-      Alert.alert("Success", "Connection request sent!")
+      setSuccess("Connection request sent!")
       setUserTokenInput("")
-    } catch (error) {
-      Alert.alert("Error", "Failed to link with this token.")
+    } catch (e) {
+      setError("Failed to link with this token.")
     }
   }
 
   return (
     <View style={$styles}>
       <Text style={themed($text)}>Add a connection by token:</Text>
-      <TextInput
+
+      <TextField
         value={userTokenInput}
         onChangeText={setUserTokenInput}
         placeholder="Enter user token"
         autoCapitalize="none"
-        style={themed($input)}
-        placeholderTextColor={themed(({ colors }) => colors.palette.neutral500)}
+        status={error ? "error" : undefined}
+        helper={error || success || ""}
       />
 
-      <Pressable onPress={handleAddConnection} style={themed($button)}>
-        <Text style={$buttonText}>Add</Text>
-      </Pressable>
+      <Button
+        text="Add"
+        onPress={handleAddConnection}
+        style={themed($button)}
+        textStyle={$buttonText}
+      />
     </View>
   )
 })
@@ -83,20 +81,9 @@ const $text: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
   marginBottom: 8,
 })
 
-const $input: ThemedStyle<TextStyle> = ({ colors }) => ({
-  borderWidth: 1,
-  borderColor: colors.palette.neutral400,
-  borderRadius: 6,
-  padding: 10,
-  marginBottom: 12,
-  backgroundColor: colors.background,
-  color: colors.text,
-})
-
-
 const $button: ThemedStyle<ViewStyle> = ({ colors }) => ({
   backgroundColor: colors.palette.primary500,
-  paddingVertical: 10,
+  marginTop: 12,
   borderRadius: 6,
 })
 

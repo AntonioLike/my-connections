@@ -7,7 +7,7 @@ import { ConnectionSnapshotIn } from "@/models"
 import { ConnectionResult, LinkRequestResult } from "./connection.api.types"
 
 const CONNECTION_API_CONFIG: ApiConfig = {
-    url: `${Config.API_URL}connections/`, // or 'link/' if your route differs
+    url: `${Config.API_URL}connection/`, // or 'link/' if your route differs
 }
 
 export class ConnectionApi extends api {
@@ -40,7 +40,7 @@ export class ConnectionApi extends api {
      */
     async linkWithToken(userToken: string, targetToken: string): Promise<LinkRequestResult | GeneralApiProblem> {
         const response: ApiResponse<ConnectionSnapshotIn> = await this.apisauce.post(
-            `link?userToken=${encodeURIComponent(userToken)}&targetToken=${encodeURIComponent(targetToken)}`
+            `link?userToken=${userToken}&targetToken=${targetToken}`
         )
 
         const problem = this.handleProblem(response)

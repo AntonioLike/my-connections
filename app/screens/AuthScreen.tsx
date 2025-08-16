@@ -38,6 +38,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen(_pro
       handleAuth,
       validationError,
     },
+    userStore,
   } = useStores()
 
   const {
@@ -66,7 +67,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen(_pro
     setIsSubmitted(true)
     setAttemptsCount((c) => c + 1)
 
-    const result = await handleAuth(authMode)
+    const result = await handleAuth(authMode, userStore)
     if (result) {
       setAuthError(result)
       return

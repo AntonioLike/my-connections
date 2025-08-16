@@ -7,10 +7,8 @@ import { withSetPropAction } from "./helpers/withSetPropAction"
 export const UserModel = types
   .model("User")
   .props({
-    id: types.identifierNumber,
     name: types.string,
     email: types.string,
-    password: types.string,
     userToken: types.string,
   })
   .actions(withSetPropAction)
@@ -20,6 +18,6 @@ export const UserModel = types
 export interface User extends Instance<typeof UserModel> { }
 export interface UserSnapshotOut extends SnapshotOut<typeof UserModel> { }
 export interface UserSnapshotIn extends SnapshotIn<typeof UserModel> { }
-export const createUserDefaultModel = (id: number, name: string, email: string, password: string, userToken: string, connections?: string[]) => types.optional(UserModel, { id, name, email, password, userToken })
+export const createUserDefaultModel = (name: string, email: string, userToken: string, connections?: string[]) => types.optional(UserModel, { name, email, userToken })
 
 
