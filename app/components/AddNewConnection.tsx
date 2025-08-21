@@ -41,8 +41,8 @@ export const AddNewConnection = observer(function AddNewConnection(
       await connectionStore.linkWithToken(currentUserToken, userTokenInput.trim())
       setSuccess("Connection request sent!")
       setUserTokenInput("")
-    } catch (e) {
-      setError("Failed to link with this token.")
+    } catch (e: any) {
+      setError(e.message || "Failed to link with this token.")
     }
   }
 

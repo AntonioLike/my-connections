@@ -28,7 +28,7 @@ export type GeneralApiProblem =
   /**
    * All other 4xx series errors.
    */
-  | { kind: "rejected" }
+  | { kind: "rejected", message: string }
   /**
    * Something truly unexpected happened. Most likely can try again. This is a catch all.
    */
@@ -64,7 +64,7 @@ export function getGeneralApiProblem(response: ApiResponse<any>): GeneralApiProb
         case 404:
           return { kind: "not-found" }
         default:
-          return { kind: "rejected" }
+          return { kind: "rejected", message: response.data?.message || "Request rejected" }
       }
     case "CANCEL_ERROR":
       return null

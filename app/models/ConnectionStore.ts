@@ -40,7 +40,12 @@ export const ConnectionStoreModel = types
                 return newConnection
             } else {
                 console.tron.error("Error linking with token", result)
-                throw new Error(result.kind)
+                if (result.kind === "rejected") {
+                    throw new Error(result.message || "Failed to link with token")
+                }
+                else {
+                    throw new Error("Failed to link with token")
+                }
             }
         },
     }))
