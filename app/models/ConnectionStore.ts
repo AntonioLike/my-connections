@@ -19,7 +19,7 @@ export const ConnectionStoreModel = types
          * Fetches all connections for a given userToken.
          */
         async fetchConnections(userToken: string) {
-            const result = await connectionApi.getConnections(userToken)
+            const result = await connectionApi.geMyConnections(userToken)
 
             if (result.kind === "ok") {
                 self.connections.replace(result.connections.map((c: ConnectionSnapshotIn) => ConnectionModel.create(c)))

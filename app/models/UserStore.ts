@@ -1,7 +1,8 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { flow, Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { User, UserModel } from "./User"
 import { userApi } from "@/services/user/user.api"
+import { connectionApi } from "@/services/connection/connection.api"
 import { UserResult } from "@/services/user/user.api.types"
 
 /**
@@ -16,6 +17,16 @@ export const UserStoreModel = types
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({
+    fetchMeAndMyConnections: flow(function* () {
+      const result = yield userApi.getMe();
+      const resultConnections = yield connectionApi.geMyConnections();
+      if (result.kind === "ok" && resultConnections.kind === "ok") {
+        self.user = result.user; // safe inside flow
+        self.connections = resultConnections.connections.map((c: { id: any }) => c.id);
+      } else {
+        console.error("Error fetching user and their connections:", result);
+      }
+    }),
     setUser(userData: any) {
       self.user = UserModel.create(userData)
     },

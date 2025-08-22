@@ -16,10 +16,11 @@ export class UserApi extends api {
   }
 
   /**
-   * Gets user by Id
+   * Gets auth user information.
+   * @returns The user data.
    */
-  async getUserById(userId: string): Promise<UserResult> {
-    const response: ApiResponse<UserSnapshotOut> = await this.apisauce.get(`${userId}`)
+  async getMe(): Promise<UserResult> {
+    const response: ApiResponse<UserSnapshotOut> = await this.apisauce.get("")
 
     const problem = this.handleProblem(response)
     if (problem) return problem
