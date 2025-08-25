@@ -38,9 +38,9 @@ export class ConnectionApi extends api {
     /**
      * Creates a link between two user tokens
      */
-    async linkWithToken(userToken: string, targetToken: string): Promise<LinkRequestResult | GeneralApiProblem> {
+    async linkWithToken(targetToken: string): Promise<LinkRequestResult | GeneralApiProblem> {
         const response: ApiResponse<ConnectionSnapshotIn> = await this.apisauce.post(
-            `link?userToken=${userToken}&targetToken=${targetToken}`
+            `link?targetToken=${targetToken}`
         )
 
         const problem = this.handleProblem(response)

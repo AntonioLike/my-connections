@@ -18,8 +18,8 @@ export const ConnectionStoreModel = types
         /**
          * Fetches all connections for a given userToken.
          */
-        async fetchConnections(userToken: string) {
-            const result = await connectionApi.geMyConnections(userToken)
+        async fetchConnections() {
+            const result = await connectionApi.geMyConnections()
 
             if (result.kind === "ok") {
                 self.connections.replace(result.connections.map((c: ConnectionSnapshotIn) => ConnectionModel.create(c)))
@@ -31,8 +31,8 @@ export const ConnectionStoreModel = types
         /**
          * Sends a link request and updates the store with the new connection.
          */
-        async linkWithToken(myToken: string, otherToken: string) {
-            const result = await connectionApi.linkWithToken(myToken, otherToken)
+        async linkWithToken(otherToken: string) {
+            const result = await connectionApi.linkWithToken(otherToken)
 
             if (result.kind === "ok") {
                 const newConnection = ConnectionModel.create(result.connection)

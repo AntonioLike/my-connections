@@ -26,19 +26,13 @@ export const AddNewConnection = observer(function AddNewConnection(
     setError(null)
     setSuccess(null)
 
-    const currentUserToken = userStore.user?.userToken
-    if (!currentUserToken) {
-      setError("You must be logged in to add a connection.")
-      return
-    }
-
     if (!userTokenInput.trim()) {
       setError("Please enter a valid user token.")
       return
     }
 
     try {
-      await connectionStore.linkWithToken(currentUserToken, userTokenInput.trim())
+      await connectionStore.linkWithToken(userTokenInput.trim())
       setSuccess("Connection request sent!")
       setUserTokenInput("")
     } catch (e: any) {
