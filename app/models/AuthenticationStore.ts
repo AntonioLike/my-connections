@@ -1,6 +1,7 @@
 import { Instance, SnapshotOut, flow, types } from "mobx-state-tree"
 import { authApi } from "@/services/auth/auth.api"
 import { UserStore } from "./UserStore"
+import { tokenManager } from "@/services/auth/tokenManager"
 
 export const AuthenticationStoreModel = types
   .model("AuthenticationStore", {
@@ -48,12 +49,12 @@ export const AuthenticationStoreModel = types
       store.authName = value
     }
 
-    const logout = () => {
+    const logout = flow(function* () {
       store.authToken = undefined
-      store.authEmail = ""
-      store.authPassword = ""
-      store.authName = ""
-    }
+      store.authEmail = ""; store.authPassword = ""; store.authName = ""
+      yield tokenManager.setAccess(undefined)
+      yield tokenManager.setRefresh(undefined)
+    })
 
     const handleAuth = flow(function* (
       authMode: "login" | "register" | "forgot",
@@ -71,34 +72,32 @@ export const AuthenticationStoreModel = types
       try {
         if (authMode === "login") {
           const result = yield authApi.login(credentials)
-          if (result.kind === "ok") {
-            store.authToken = result.data.token
-            if (userStore && result.data.user) {
-              userStore.setUser(result.data.user) // Set user data in userStore
-            }
-          } else {
-            return result.kind
-          }
+          if (result.kind !== "ok") return result.kind
+
+          const access = result.data.accessToken ?? result.data.token   // ← align to your payload
+          const refresh = result.data.refreshToken
+          store.authToken = access
+          if (userStore && result.data.user) userStore.setUser(result.data.user)
+
+          yield tokenManager.setAccess(access)
+          if (refresh) yield tokenManager.setRefresh(refresh)
+
         } else if (authMode === "register") {
           const result = yield authApi.register(credentials)
-          if (result.kind === "ok") {
-            store.authToken = result.data.token
-          } else {
-            return result.kind
-          }
-        } else if (authMode === "forgot") {
+          if (result.kind !== "ok") return result.kind
+
+          const access = result.data.accessToken ?? result.data.token
+          const refresh = result.data.refreshToken
+          store.authToken = access
+          yield tokenManager.setAccess(access)
+          if (refresh) yield tokenManager.setRefresh(refresh)
+
+        } else {
           const result = yield authApi.forgotPassword(store.authEmail)
-          if (result.kind !== "ok") {
-            return result.kind
-          }
-          console.log(`Password reset sent to ${store.authEmail}`)
+          if (result.kind !== "ok") return result.kind
         }
 
-        // Safe reset
-        store.authEmail = ""
-        store.authPassword = ""
-        store.authName = ""
-
+        store.authEmail = ""; store.authPassword = ""; store.authName = ""
         return ""
       } catch (e) {
         console.error("Authentication error", e)

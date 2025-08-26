@@ -4,9 +4,8 @@ export interface AuthCredentials {
 }
 
 export interface AuthResponse {
-    token: string
+    accessToken: string
     userId: string
-    // optionally:
-    // refreshToken?: string
-    // expiresIn?: number
+    refreshToken?: string
+    expiresIn?: number
 }
