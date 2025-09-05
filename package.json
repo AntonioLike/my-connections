@@ -20,6 +20,7 @@
     "build:android:dev": "eas build --profile development:device --platform android --local",
     "build:android:prod": "eas build --profile production --platform android --local",
     "start": "expo start --dev-client",
+    "dev": "npm run start",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
