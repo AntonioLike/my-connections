@@ -9,15 +9,12 @@ import { useStores } from "@/models"
 
 interface ConnectionsScreenProps extends AppStackScreenProps<"Connections"> { }
 
-const mockConnections = [
-  { id: "1", name: "Alice", linkId: 1 },
-  { id: "2", name: "Bob", linkId: 2 },
-]
-
 export const ConnectionsScreen: FC<ConnectionsScreenProps> = observer(function ConnectionsScreen() {
   const navigation = useNavigation<AppStackScreenProps<"ConnectionCards">["navigation"]>()
 
   const { connectionStore } = useStores()
+
+  const connections = connectionStore.connections;
 
   const goToCards = (linkId: Number) => {
     navigation.navigate("ConnectionCards", { linkId })
@@ -27,9 +24,9 @@ export const ConnectionsScreen: FC<ConnectionsScreenProps> = observer(function C
     <Screen style={$root} preset="scroll">
       <Text text="Your Connections" style={$title} />
 
-      {mockConnections.map((conn) => (
-        <Button key={conn.id} onPress={() => goToCards(conn.linkId)} preset="default" style={$card}>
-          {conn.name}
+      {connections.map((conn) => (
+        <Button key={conn.id} onPress={() => goToCards(conn.id)} preset="default" style={$card}>
+          {conn.user.name}
         </Button>
       ))}
 

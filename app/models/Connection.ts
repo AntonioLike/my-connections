@@ -9,9 +9,8 @@ export const ConnectionModel = types
   .model("Connection")
   .props({
     id: types.identifierNumber,
-    user1: UserModel,
-    user2: UserModel,
-    status: types.enumeration("Status", ["pending", "linked"]),
+    user: UserModel,
+    status: types.optional(types.enumeration("Status", ["pending", "linked"]), "linked"),
   })
   .actions(withSetPropAction)
 
@@ -21,18 +20,9 @@ export interface ConnectionSnapshotIn extends SnapshotIn<typeof ConnectionModel>
 export const createConnectionDefaultModel = () =>
   types.optional(ConnectionModel, {
     id: 0,
-    user1: {
-      id: 0,
+    user: {
       name: "",
       email: "",
-      password: "",
-      userToken: "",
-    },
-    user2: {
-      id: 0,
-      name: "",
-      email: "",
-      password: "",
       userToken: "",
     },
     status: "pending",

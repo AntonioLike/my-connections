@@ -18,7 +18,7 @@ export class ConnectionApi extends api {
     /**
      * Gets all connections for the given user token
      */
-    async geMyConnections(): Promise<ConnectionResult | GeneralApiProblem> {
+    async getMyConnections(): Promise<ConnectionResult | GeneralApiProblem> {
         const response: ApiResponse<ConnectionSnapshotIn[]> = await this.apisauce.get("")
 
         const problem = this.handleProblem(response)

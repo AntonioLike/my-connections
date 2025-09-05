@@ -13,7 +13,8 @@ import { applySnapshot, IDisposer, onSnapshot } from "mobx-state-tree"
 import { RootStore, RootStoreSnapshot } from "../RootStore"
 import * as storage from "../../utils/storage"
 import { fetchAndSetCards } from "./cardSetupStore" // 👈 import your helper
-import { fetchAndSetMeAndMyConnections } from "./userSetupStore"
+import { fetchMe } from "./userSetupStore"
+import { fetchMyConnections } from "./connectionsSetupStore"
 
 /**
  * The key we'll be saving our state as within async storage.
@@ -48,10 +49,17 @@ export async function setupRootStore(rootStore: RootStore) {
     }
   }
 
-  // Fallback: If no cards were restored, fetch from API
   if (!restoredState?.userStore?.user) {
     try {
-      await fetchAndSetMeAndMyConnections(rootStore.userStore)
+      await fetchMe(rootStore.userStore)
+    } catch (e) {
+      if (__DEV__) console.error("Failed to fetch cards from API:", e)
+    }
+  }
+
+  if (!restoredState?.connectionStore?.connections?.length) {
+    try {
+      await fetchMyConnections(rootStore.connectionStore)
     } catch (e) {
       if (__DEV__) console.error("Failed to fetch cards from API:", e)
     }

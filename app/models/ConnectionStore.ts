@@ -1,10 +1,7 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { flow, Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { ConnectionModel } from "./Connection"
 import { connectionApi } from "@/services/connection/connection.api"
-import { ConnectionSnapshotIn } from "./Connection"
-import { ConnectionResult, LinkRequestResult } from "@/services/connection/connection.api.types"
-
 /**
  * MobX-state-tree store for managing connections between users.
  */
@@ -15,18 +12,24 @@ export const ConnectionStoreModel = types
     })
     .actions(withSetPropAction)
     .actions((self) => ({
-        /**
-         * Fetches all connections for a given userToken.
-         */
-        async fetchConnections() {
-            const result = await connectionApi.geMyConnections()
-
+        fetchConnections: flow(function* () {
+            const result = yield connectionApi.getMyConnections()
             if (result.kind === "ok") {
-                self.connections.replace(result.connections.map((c: ConnectionSnapshotIn) => ConnectionModel.create(c)))
-            } else {
-                console.tron.error("Error fetching connections", result)
+                const snapshots = result.connections.map((c: any) => ({
+                    id: c.id,
+                    user: {
+                        name: c.user?.name ?? "",
+                        userToken: c.user?.userToken ?? "",
+                    },
+                    status: "linked",                    // or c.status ?? "pending" if API provides it
+                }))
+
+                self.connections.replace(snapshots as any)
             }
-        },
+            else {
+                console.error("Error fetching connections:", result);
+            }
+        }),
 
         /**
          * Sends a link request and updates the store with the new connection.

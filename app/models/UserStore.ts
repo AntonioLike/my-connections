@@ -17,9 +17,9 @@ export const UserStoreModel = types
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({
-    fetchMeAndMyConnections: flow(function* () {
+    fetchMe: flow(function* () {
       const result = yield userApi.getMe();
-      const resultConnections = yield connectionApi.geMyConnections();
+      const resultConnections = yield connectionApi.getMyConnections();
       if (result.kind === "ok" && resultConnections.kind === "ok") {
         self.user = result.user; // safe inside flow
         self.connections = resultConnections.connections.map((c: { id: any }) => c.id);

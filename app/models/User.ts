@@ -8,7 +8,7 @@ export const UserModel = types
   .model("User")
   .props({
     name: types.string,
-    email: types.string,
+    email: types.maybe(types.string),
     userToken: types.string,
   })
   .actions(withSetPropAction)
