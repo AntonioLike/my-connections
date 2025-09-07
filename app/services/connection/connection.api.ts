@@ -46,6 +46,9 @@ export class ConnectionApi extends api {
         const problem = this.handleProblem(response)
         if (problem) return problem
 
+
+        if (response.status === 202)
+            return { kind: "ok", message: "Waiting for the other user to request the connection." };
         try {
             const connection: ConnectionSnapshotIn = response.data as ConnectionSnapshotIn
             return { kind: "ok", connection }

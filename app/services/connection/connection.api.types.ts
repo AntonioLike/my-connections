@@ -7,5 +7,6 @@ export type ConnectionResult =
 
 export type LinkRequestResult =
     | { kind: "ok"; connection: ConnectionSnapshotIn }
+    | { kind: "ok"; message: string }
     | { kind: "bad-data" }
     | { kind: "timeout" | "cannot-connect" | "server" | "unauthorized" | "forbidden" | "not-found"; temporary?: boolean }

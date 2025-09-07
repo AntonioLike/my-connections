@@ -37,10 +37,12 @@ export const ConnectionStoreModel = types
         async linkWithToken(otherToken: string) {
             const result = await connectionApi.linkWithToken(otherToken)
 
-            if (result.kind === "ok") {
+            if (result.kind === "ok" && "connection" in result && result.connection) {
                 const newConnection = ConnectionModel.create(result.connection)
                 self.connections.push(newConnection)
                 return newConnection
+            } else if (result.kind === "ok" && "message" in result && result.message) {
+                return result.message
             } else {
                 console.tron.error("Error linking with token", result)
                 if (result.kind === "rejected") {
