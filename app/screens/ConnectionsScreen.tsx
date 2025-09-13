@@ -6,6 +6,7 @@ import { Button, Screen, Text } from "@/components"
 import { useNavigation } from "@react-navigation/native"
 import { AddNewConnection } from "@/components/AddNewConnection"
 import { useStores } from "@/models"
+import { UserTokenView } from "@/components/UserTokenView"
 
 interface ConnectionsScreenProps extends AppStackScreenProps<"Connections"> { }
 
@@ -29,6 +30,8 @@ export const ConnectionsScreen: FC<ConnectionsScreenProps> = observer(function C
           {conn.user.name}
         </Button>
       ))}
+
+      <UserTokenView />
 
       <AddNewConnection style={$addConnection} />
     </Screen>
