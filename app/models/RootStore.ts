@@ -2,7 +2,6 @@ import { Instance, SnapshotOut, types } from "mobx-state-tree"
 import { UserCardResponseStoreModel } from "./UserCardResponseStore"
 import { UserStoreModel } from "./UserStore"
 import { AuthenticationStoreModel } from "./AuthenticationStore"
-import { EpisodeStoreModel } from "./EpisodeStore"
 import { CardStoreModel } from "./CardStore"
 import { ConnectionStoreModel } from "./ConnectionStore"
 
@@ -15,7 +14,6 @@ export const RootStoreModel = types.model("RootStore").props({
   userStore: types.optional(UserStoreModel, {} as any),
   authenticationStore: types.optional(AuthenticationStoreModel, {}),
   connectionStore: types.optional(ConnectionStoreModel, { connections: [] }),
-  episodeStore: types.optional(EpisodeStoreModel, {}),
 })
 
 /**
